@@ -6,26 +6,21 @@ import urllib.parse
 import time
 from jobspy import scrape_jobs
 import pandas as pd
-from dotenv import load_dotenv # Import the library
+from dotenv import load_dotenv
 
-# --- FIX 1: LOAD LOCAL ENV VARIABLES ---
-# This reads your .env file when running locally. 
-# On GitHub, it does nothing (which is fine).
-load_dotenv() 
+# --- 1. SETUP & SECRETS ---
+load_dotenv() # Load local .env file
 
-# DO NOT put the actual keys here. 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 if not GEMINI_API_KEY or not TELEGRAM_BOT_TOKEN:
-    # This error helps you know if your secrets aren't loading
     raise ValueError("Missing API Keys! Check your .env file (local) or GitHub Secrets.")
 
 # --- 2. TELEGRAM NOTIFICATION ---
 def send_telegram_message(message):
     """Send message to Telegram"""
-    # ... (Keep your existing Telegram code here) ...
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     data = urllib.parse.urlencode({
         'chat_id': TELEGRAM_CHAT_ID,
@@ -44,7 +39,6 @@ def send_telegram_message(message):
 
 # --- 3. SMART KEYWORD FILTER ---
 def keyword_prefilter(title, description):
-    # ... (Keep your existing filter code here) ...
     # Ensure inputs are strings to prevent errors
     title_lower = str(title).lower() if title else ""
     desc_lower = str(description).lower() if description else ""
@@ -63,7 +57,7 @@ def keyword_prefilter(title, description):
         if exclude in title_lower:
             return False, "Wrong level/role"
     
-    # YOUR TARGET ROLES
+    # TARGET ROLES
     perfect_titles = [
         'engineering manager', 'platform manager', 'devops manager',
         'sre manager', 'infrastructure manager', 'technical manager',
@@ -102,7 +96,6 @@ def keyword_prefilter(title, description):
 
 # --- 4. AI FUNCTION ---
 def ask_gemini_stealth(prompt):
-    # ... (Keep your existing AI code here) ...
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={GEMINI_API_KEY}"
     headers = {'Content-Type': 'application/json'}
     data = json.dumps({"contents": [{"parts": [{"text": prompt}]}]}).encode('utf-8')
@@ -111,6 +104,9 @@ def ask_gemini_stealth(prompt):
         with urllib.request.urlopen(req) as response:
             result = json.loads(response.read().decode())
             return result['candidates'][0]['content']['parts'][0]['text']
+    except urllib.error.HTTPError as e:
+        print(f"   (AI Error: HTTP {e.code})", end="")
+        return "0"
     except Exception as e:
         print(f"   (AI Error: {e})", end="")
         return "0"
@@ -136,11 +132,10 @@ def start_hunting():
     test = ask_gemini_stealth("Reply 'OK'")
     if "OK" not in test:
         print(f" ❌ Failed")
-        # Don't return, try to continue
     else:
         print(" ✅")
     
-    # Test Telegram (Simplified check)
+    # Test Telegram
     print(f"   - Telegram...", end="")
     if send_telegram_message("🤖 Job Hunter Started!"):
         print(" ✅")
@@ -152,7 +147,6 @@ def start_hunting():
         for search_term in SEARCH_STRATEGIES:
             print(f"\n🕵️‍♂️ Scraping: '{search_term}' in {location}...")
             try:
-                # Add random delay to avoid bot detection
                 time.sleep(2) 
                 jobs = scrape_jobs(
                     site_name=TARGET_SITES,
@@ -180,7 +174,10 @@ def start_hunting():
     promising_jobs = []
     for index, job in jobs.iterrows():
         title = job.get('title', 'Unknown')
-        description = job.get('description', '') # Might be None or empty
+        
+        # Safe description handling for filtering
+        raw_desc = job.get('description')
+        description = str(raw_desc) if raw_desc else ""
         
         is_match, reason = keyword_prefilter(title, description)
         
@@ -202,12 +199,14 @@ def start_hunting():
         location = job.get('location', 'Unknown')
         apply_url = job.get('job_url', '#')
         
-        # --- FIX 2: PREVENT CRASH IF DESCRIPTION IS NONE ---
-        description = job.get('description')
-        if not description:
-            description = "No description available."
+        # --- CRITICAL FIX: HANDLE NONE & FLOAT DESCRIPTIONS ---
+        raw_desc = job.get('description')
+        description = str(raw_desc) # Convert NaN/Float/None to string "nan" or "None"
         
-        # Safe slicing
+        # Check if it's truly empty or just "nan" text
+        if not raw_desc or description.lower() == 'nan':
+            description = "No description available for this job."
+            
         desc_truncated = description[:1500] 
         
         print(f"\n   Analyzing: {str(title)[:35]}...", end="")
@@ -221,7 +220,10 @@ def start_hunting():
         """
         
         score_text = ask_gemini_stealth(prompt)
-        time.sleep(4)
+        
+        # --- RATE LIMIT FIX: SLOW DOWN ---
+        # print(" (cooling down)...", end="")
+        time.sleep(10) # Increased to 10s to avoid 429 Errors
         
         try:
             score = int(''.join(filter(str.isdigit, score_text)))
