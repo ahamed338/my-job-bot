@@ -11,11 +11,6 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# --- 1. YOUR KEYS ---
-GEMINI_API_KEY = "AIzaSyAl7tBq14f5BRepK8Ogca85K17AhZWX4g0".strip()
-TELEGRAM_BOT_TOKEN = "8559611699:AAEUTJsOrfocPonseVRObrpZ20H2svVQotw".strip()
-TELEGRAM_CHAT_ID = "6597911351".strip()
-
 # --- 2. TELEGRAM NOTIFICATION ---
 def send_telegram_message(message):
     """Send message to Telegram"""
