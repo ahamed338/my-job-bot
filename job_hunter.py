@@ -6,6 +6,10 @@ import urllib.parse
 import time
 from jobspy import scrape_jobs
 import pandas as pd
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # --- 1. YOUR KEYS ---
 GEMINI_API_KEY = "AIzaSyAl7tBq14f5BRepK8Ogca85K17AhZWX4g0".strip()
