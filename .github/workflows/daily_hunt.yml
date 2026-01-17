@@ -12,7 +12,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # Updated to v4
+      uses: actions/checkout@v4
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -22,9 +22,9 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        # Fallback if requirements.txt is missing or incomplete for this script
-        pip install python-jobspy pandas google-genai
+        # Added python-dotenv to fix the ModuleNotFoundError
+        # Removed google-genai since the script uses standard libs now
+        pip install python-jobspy pandas python-dotenv
     
     - name: Run Job Hunter
       env:
@@ -36,7 +36,7 @@ jobs:
     
     - name: Upload logs (if failed)
       if: failure()
-      uses: actions/upload-artifact@v4  # Updated to v4 (Fixes the error)
+      uses: actions/upload-artifact@v4
       with:
         name: job-hunter-logs
         path: |
