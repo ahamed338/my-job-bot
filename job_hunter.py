@@ -79,9 +79,10 @@ def keyword_prefilter(title, description):
     your_skills = [
         'kubernetes', 'k8s', 'aks', 'eks', 'azure', 'aws', 'cloud',
         'platform engineering', 'platform', 'internal developer platform', 'idp',
-        'terraform', 'infrastructure as code', 'iac',
+        'terraform', 'infrastructure as code', 'iac', 'ansible', 'helm',
         'finops', 'cost optimization', 'gitops', 'ci/cd', 'devops', 'sre',
-        'docker', 'container', 'team lead', 'engineering management', 'manage team'
+        'docker', 'container', 'team lead', 'engineering management', 'manage team',
+        'generative ai', 'llm', 'prompt engineering', 'python', 'bash'
     ]
     
     skill_matches = sum(1 for skill in your_skills if skill in desc_lower)
@@ -119,9 +120,62 @@ HOURS_OLD = 72
 TARGET_SITES = ["indeed", "linkedin"]
 
 MY_RESUME = """
-Platform Engineering Manager | 16+ Years Experience | First American India
-Current: Associate Manager - Platform Engineering & DevOps
-Skills: Azure, AWS, Kubernetes, Terraform, Team Management
+Shaik Noor Ahamed
+📍 Bengaluru, India | 📞 +91-8123532127 | ✉️ ahamed338@gmail.com | 🔗 linkedin.com/in/ahamed-shaik-9ba020191
+
+PROFESSIONAL SUMMARY
+Platform Engineering Manager with 16+ years of experience transforming legacy operations into high-performance, AI-driven DevOps cultures. Currently leading a 7-member engineering squad to build self-service Internal Developer Platforms (IDP) on Azure & AWS. Expert in FinOps governance (saving $200k+ annually) and leveraging Generative AI to automate workflows. Proven track record of scaling delivery for 50+ applications while cutting release cycles by 40%. Seeking a Senior Manager role to drive platform strategy and engineering excellence.
+
+CORE SKILLS
+Platform Strategy: Platform Engineering, Internal Developer Platform (IDP), Site Reliability Engineering (SRE), FinOps (Cloud Cost Optimization), DevSecOps.
+Cloud & Infrastructure: Azure, AWS, Kubernetes (AKS/EKS), Docker, Helm, Terraform (IaC), Ansible.
+AI & Automation: Generative AI Integration (ChatGPT/Claude), LLM Ops, Python, Bash, Prompt Engineering.
+Leadership: Engineering Management (Team of 7), Performance Reviews, Tech Hiring, Agile/Scrum Delivery, Stakeholder Management.
+
+PROFESSIONAL EXPERIENCE
+First American (India) Pvt. Ltd. | Bengaluru,  India
+Associate Manager – Platform Engineering & DevOps (Functionally: Engineering Manager)
+Apr 2025 – Present
+* Engineering Leadership: Manage a high-performing squad of 7 DevOps Engineers, handling hiring, performance appraisals, and career coaching. Scaled team from 5 to 7 members to support enterprise platform growth.
+* GenAI Innovation: Pioneered the “AI-First” DevOps initiative, training the team on Prompt Engineering and integrating ChatGPT/Claude to automate documentation and troubleshooting, boosting team productivity by 20%.
+* FinOps & Cost Strategy: Spearheaded multi-cloud (Azure/AWS) cost optimization for 50+ applications, achieving $200k+ in annual savings (20% reduction) through rightsizing and automated governance.
+* Platform Transformation: Directed the transition to GitOps and self-service pipelines, successfully slashing release cycles by 40% and increasing Agile sprint velocity by 18%. 
+
+Technical Lead – DevOps & SRE
+Sep 2022 – Mar 2025
+* Team Leadership: Led a pod of 6 engineers, driving the CI/CD transformation for 30+ critical projects while acting as the de-facto delivery lead.
+* Infrastructure as Code: Architected scalable Terraform & GitHub Actions pipelines, reducing environment provisioning time by 50%.
+* Security (DevSecOps): Integrated SonarQube, Veracode, and HashiCorp Vault into the release path, reducing production vulnerabilities by 15%.
+
+Associate Technical Lead | Jan 2018 – Sep 2022
+Coordinated team of 4-5 engineers through AKS and OpenShift migration for 40+ production workloads
+Led daily standups, sprint planning, and delivery coordination while managing cross-team dependencies
+Migrated legacy applications to Kubernetes, improving scalability by 30% and reducing infrastructure overhead
+Transitioned pipelines from Classic → YAML/GitOps, reducing deployment costs by 15%.
+
+Principal Software Engineer | Oct 2016 – Dec 2018
+Modernized release pipelines in Azure DevOps & TFS, reducing build times by 20%.
+Enabled automated testing frameworks, lowering production defects by 10%.
+
+SLK Software Services Pvt. Ltd. | Bengaluru, India
+Senior Software Engineer | Feb 2013 – Oct 2016
+Automated build & deployment processes using Jenkins, improving release speed.
+Managed Git & TFS version control for enterprise-scale applications.
+
+Patra India Pvt. Ltd. | Hyderabad, India
+Application Support Engineer | Aug 2007 – Nov 2012
+Delivered 99% uptime in production environments through proactive monitoring.
+Improved SLA adherence with automation scripts (Bash/PowerShell).
+
+KEY PROJECTS & IMPACT
+Cloud Migration: Migrated legacy apps to AKS/OpenShift, cutting deployment time by 20%.
+CI/CD Optimization: Implemented YAML & GitOps pipelines, reducing new project setup time by 30%.
+Cost Savings: Applied FinOps & automation strategies, saving 25% in infrastructure costs.
+DevSecOps: Integrated Vault, SonarQube, Veracode, strengthening cloud security posture.
+Tool Modernization: Transitioned from TFS → Azure DevOps, cutting tool maintenance cost by 20%.
+
+EDUCATION
+Master of Science (Physics), Andhra University, 2004
 """
 
 def start_hunting():
