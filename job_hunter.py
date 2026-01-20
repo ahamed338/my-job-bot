@@ -121,7 +121,7 @@ TARGET_SITES = ["indeed", "linkedin"]
 MY_RESUME = """
 Platform Engineering Manager | 16+ Years Experience | First American India
 Current: Associate Manager - Platform Engineering & DevOps
-Skills: Azure, AWS, Kubernetes, Terraform, Team Management (7 engineers)
+Skills: Azure, AWS, Kubernetes, Terraform, Team Management
 """
 
 def start_hunting():
